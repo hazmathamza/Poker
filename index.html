@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Poker — Texas Hold'em</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-name">POKER</span>
+    <span class="brand-sub">Texas Hold'em · Six-Max · No Limit</span>
+  </div>
+  <div class="topbar-right">
+    <span id="net-status" class="net-status">Single-player</span>
+    <button id="btn-leave" class="btn btn-small hidden" type="button">Leave</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- ======================= LOBBY ======================= -->
+  <section id="screen-lobby" class="screen">
+    <div class="panel lobby-panel">
+      <h1>Texas Hold'em</h1>
+      <p class="lobby-sub">Six seats. $10 / $20 blinds, $1,000 stacks. Play money only.</p>
+
+      <label class="field-label" for="name-input">Your name</label>
+      <input id="name-input" class="text-input" type="text" maxlength="16"
+             autocomplete="off" placeholder="Player">
+
+      <button id="btn-ai" class="btn btn-primary btn-block" type="button">Play vs AI</button>
+
+      <div id="mp-block">
+        <div class="divider"><span>Multiplayer</span></div>
+        <button id="btn-create" class="btn btn-block" type="button">Create room</button>
+        <div class="join-row">
+          <input id="code-input" class="text-input code-input" type="text" maxlength="6"
+                 autocomplete="off" autocapitalize="characters" placeholder="CODE">
+          <button id="btn-join" class="btn" type="button">Join with code</button>
+        </div>
+      </div>
+      <p id="mp-note" class="note hidden">Multiplayer is not configured on this
+        deployment yet — single-player vs AI still works.</p>
+
+      <p id="lobby-msg" class="msg" role="status"></p>
+    </div>
+  </section>
+
+  <!-- ======================= ROOM LOBBY ======================= -->
+  <section id="screen-room" class="screen hidden">
+    <div class="panel lobby-panel">
+      <div class="field-label">Room code — share it with your friends</div>
+      <div class="code-row">
+        <span id="room-code" class="room-code">------</span>
+        <button id="btn-copy-code" class="btn btn-small" type="button">Copy</button>
+      </div>
+
+      <div class="field-label">Players</div>
+      <ul id="room-players" class="player-list"></ul>
+      <p class="note">AI fills the empty seats when the game starts, so the
+        table is always full.</p>
+
+      <button id="btn-start" class="btn btn-primary btn-block hidden" type="button">Start game</button>
+      <p id="room-wait" class="note hidden">Waiting for the host to start the game…</p>
+      <p id="room-msg" class="msg" role="status"></p>
+    </div>
+  </section>
+
+  <!-- ======================= TABLE ======================= -->
+  <section id="screen-table" class="screen hidden">
+    <div class="table-layout">
+
+      <div class="table-main">
+        <div class="table-scene" id="table-scene">
+          <div class="rail">
+            <div class="felt">
+              <div class="betline"></div>
+              <div class="felt-brand">TEXAS HOLD'EM</div>
+            </div>
+          </div>
+
+          <div id="board-center">
+            <div id="pot-display">
+              <div id="pot-chips"></div>
+              <div id="pot-label" class="pot-label">Pot $0</div>
+            </div>
+            <div id="board-cards"></div>
+            <div id="stage-label" class="stage-label"></div>
+          </div>
+
+          <div id="seats"></div>
+
+          <div id="showdown-overlay" class="hidden">
+            <div class="showdown-card">
+              <div id="showdown-title" class="showdown-title"></div>
+              <div id="showdown-sub" class="showdown-sub"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="controls panel" id="controls">
+          <div class="controls-actions">
+            <button id="btn-fold" class="btn btn-fold" type="button">Fold</button>
+            <button id="btn-check" class="btn btn-act" type="button">Check</button>
+            <button id="btn-call" class="btn btn-act" type="button">Call</button>
+          </div>
+          <div class="controls-raise">
+            <div class="raise-quick">
+              <button class="btn btn-small" type="button" data-raise="half">½ Pot</button>
+              <button class="btn btn-small" type="button" data-raise="pot">Pot</button>
+              <button class="btn btn-small" type="button" data-raise="max">All-In</button>
+            </div>
+            <input id="raise-slider" type="range" step="10">
+            <div class="raise-amount">
+              <span class="raise-prefix">$</span>
+              <input id="raise-input" type="number" step="10">
+            </div>
+            <button id="btn-raise" class="btn btn-raise" type="button">Raise</button>
+          </div>
+          <button id="btn-next-hand" class="btn btn-primary hidden" type="button">Next hand</button>
+          <div id="turn-hint" class="turn-hint"></div>
+        </div>
+      </div>
+
+      <aside class="side panel">
+        <div class="side-head">
+          <span class="side-title">Action log</span>
+          <span id="hand-label" class="hand-label"></span>
+        </div>
+        <ul id="log" class="log"></ul>
+      </aside>
+
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">Play money only — the chips are fake and worth nothing.</footer>
+
+<!-- Supabase JS v2 client (net.js expects window.supabase) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Game scripts, in dependency order -->
+<script src="config.js"></script>
+<script src="engine.js"></script>
+<script src="art.js"></script>
+<script src="net.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

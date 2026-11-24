@@ -1,0 +1,15 @@
+# Dependencies (this is a static site — there should be none, but just in case)
+node_modules/
+
+# Vercel local state
+.vercel
+
+# macOS / Windows junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor junk
+.vscode/
+.idea/
+*.swp
